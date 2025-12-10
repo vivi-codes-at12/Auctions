@@ -1,0 +1,103 @@
+{% extends "auctions/layout.html" %}
+{% block title %}
+   Create Listing
+{% endblock %}
+
+{% block body %}
+         {% if user == listing.winner %}
+            <div class="alert alert-success" role="alert" style="margin-top: 10px; margin-left: 10px;">
+               Success!! You have won this auction!
+            </div>
+         {% endif %}
+
+     <div style="padding-left: 10px; position: absolute;" class="font-gen">
+         {% if listing.image_url %}
+            <img src="{{listing.image_url}}" class="rounded w-25 float-start me-4 mb-4" alt="{{listing.title}}">
+         {% endif %}
+            <div style="color:#080811; font-size: 30px; font-weight:600;" class="font-gen">{{listing.title}}</div>
+            <div style="padding-top: 10px;"><strong>Description:</strong> {{listing.description}}</div>
+            {% if not listing.active and listing.winner %}
+               <div style="padding-top: 10px;"><strong>Winner of the auction:</strong> {{listing.winner.username}}</div>
+            {% else %}
+               <div style="padding-top: 10px;"><strong>Bidding starts at:</strong> ${{listing.price}}</div>
+            {% endif %}
+            <div style="padding-top: 10px;"><strong>Category:</strong> {{listing.category}}</div>
+            <div style="padding-top: 10px;"><strong>Listed By:</strong> {{listing.lister.username}}</div>
+     </div>
+
+     {% if user == listing.lister %}
+     <form action="{% url 'auctions:close' listing.id %}" method="post">
+      {% csrf_token %}
+      <input type="hidden" name="close" value="close">
+      {% if not listing.winner %}
+       <button type="submit" class="btn btn-primary" style="background-color: #bc0000; color:#dee2e6; border: 0; margin-top: 6px; margin-left: 1330px; position: relative; width: 150px;">
+         Close Auction
+      </button>
+      {% endif %}
+     </form>
+     {% endif %}
+
+     <form action="{% url 'auctions:watchlisting' listing.id %}" method="post">
+      {% csrf_token %}
+       <button type="submit" name="watchlist" class="btn btn-primary" style="background-color: #303035; color:#dee2e6; border: 0; position: relative; margin-top: 240px; margin-left: 405px;">
+         {% if not in_watchlist %}
+         Add to Watchlist
+         {% else %}
+         Remove from Watchlist
+      {% endif %}
+      </button>
+     </form>
+
+   {% if listing.active %}
+    <form action="{% url 'auctions:bidding' listing.id %}" method="post">
+      {% csrf_token %}
+         <div class="col-md-3" style="padding-left: 10px; padding-top: 150px; position: relative;">
+            <label for="inputEmail4" class="form-label font-gen" style="font-size: 20px; font-weight: 500;"><strong>Bid on this item</strong></label>
+            <input type="number" name="bid" class="form-control" style="font-size: 16px; border-color:#818181; height: 40px;" placeholder="Place your bid here in $">
+            <div><small class="text-body-secondary font-gen"  style="font-size: 12px; padding-left: 2px;">Your bid must be at least as large as the starting bid.</small></div>
+            <button type="submit" class="btn btn-primary" style="background-color: #303035; color:#dee2e6; border: 0; margin-top: 8px;">Place Bid</button>
+            {% if success_message %}
+               <div class="alert alert-success" role="alert" style="margin-top: 10px; padding-left: 10px;">
+                  Your bid has been successfully placed!
+               </div>
+            {% endif %}
+               <div style="padding-top: 10px;"><strong>Current Bid:</strong>
+               {% if highest_bid %}
+                  ${{highest_bid.amount}}
+               {% else %}
+                  No bids yet.
+               {% endif %}
+               </div>
+         </div>
+      </form>
+      {% endif %}
+
+     <form action="{% url 'auctions:listing' listing.id %}" method="post">
+      {% csrf_token %}
+         <div class="col-md-4"
+         {% if not listing.active and listing.winner %}
+            style="padding-top: 130px; padding-left: 10px; position: relative;"
+         {% else %}
+            style="padding-top: 30px; padding-left: 10px; position: relative;"
+         {% endif %}>
+
+            <label for="inputEmail4" class="form-label font-gen" style="font-size: 20px; font-weight: 500;"><strong>Comments</strong></label>
+            <div class="d-flex gap-3">
+               <input type="text" class="form-control" name="comment" placeholder="Add a new comment..." style="border-color:#818181;">
+               <button type="submit" class="btn btn-primary" style="background-color: #303035; color:#dee2e6; border: 0;">Comment</button>
+            </div>
+         </div>
+      </form>
+
+      <div style="padding-top: 20px; padding-left: 11px; position: relative;" class="font-gen">
+         {% if comments %}
+            {% for comment in comments %}
+               <div><strong>{{comment.commenter.username}}:</strong>  {{comment.comment}}</div>
+               <hr>
+            {% endfor %}
+         {% else %}
+            Be the first to comment.
+         {% endif %}
+      </div>
+
+{% endblock %}>

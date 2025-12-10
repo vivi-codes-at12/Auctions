@@ -1,0 +1,17 @@
+body {
+    padding: 10px;
+    background-color: #e9ecef;
+}
+
+.font-gen {
+    font-family: Arial, sans-serif;
+    font-weight: 200;
+}
+
+.font-gen strong {
+    font-weight: 600;
+}
+
+option:hover {
+    background-color: #a7afb6;
+}

@@ -1,0 +1,31 @@
+{% extends "auctions/layout.html" %}
+{% block title %}
+    Auctions
+{% endblock %}
+
+{% block body %}
+    <div style="color:#080811; font-size: 22px; font-weight:600; padding-left: 10px;" class="font-gen">CLOSED LISTINGS</div>
+
+    {% for listing in listings %}
+    <a href="{% url 'auctions:listing' listing.id %}" style="text-decoration: none;">
+    <div class="card mb-3" style="max-width: 1700px; height: 300px; padding-top: 10px; margin-left: 10px; margin-top: 20px;">
+        <div class="row g-0">
+            <div class="col-md-4">
+             {% if listing.image_url %}
+                <img src="{{listing.image_url}}" class="img-fluid rounded-start w-50" alt="{{listing.title}}" style="margin-left: 60px; margin-top: 5px;">
+             {% endif %}
+            </div>
+            <div class="col-md-7 font-gen" style="margin-top: 14px;">
+                <div class="card-body">
+                    <h5 class="card-title" style="font-weight: 600; font-size: 30px;">{{listing.title}}</h5>
+                    <p class="card-text"><strong>Description:</strong> {{listing.description}}</p>
+                    <p class="card-text"><strong>Listing Price:</strong> ${{listing.price}}</p>
+                    <p class="card-text"><small class="text-body-secondary"><strong>Listed By:</strong> {{listing.lister.username}}</small></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    </a>
+    {% endfor %}
+
+{% endblock %}

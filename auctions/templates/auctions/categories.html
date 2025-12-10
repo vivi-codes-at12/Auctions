@@ -1,0 +1,18 @@
+{% extends "auctions/layout.html" %}
+{% block title %}
+   Auction: Categories
+{% endblock %}
+
+{% block body %}
+<div style="color:#080811; font-size: 22px; font-weight:600; padding-left: 10px;" class="font-gen">CATEGORIES</div>
+               {% for category in categories %}
+               <div style="background-color: #303035; color:#dee2e6;">
+                  <a href="{% url 'auctions:categories' category.name %}" style="text-decoration: none; color: inherit;">
+                     <ul class="font-gen">
+                        {{ category.name }}
+                        <hr>
+                     </ul>
+                  </a>
+               </div>
+               {% endfor %}
+{% endblock %}

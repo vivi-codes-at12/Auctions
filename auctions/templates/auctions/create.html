@@ -1,0 +1,49 @@
+{% extends "auctions/layout.html" %}
+{% block title %}
+   Create Listing
+{% endblock %}
+
+{% block body %}
+
+    <div style="color:#080811; font-size: 22px; font-weight:600; padding-left: 10px;" class="font-gen">CREATE LISTING</div>
+
+     <form action = "{% url 'auctions:create' %}" method = "POST" style="padding-left: 10px; padding-top: 10px;" class="font-gen">
+        <!--title, description, starting bid/original price, URL for the image(optional), category-->
+        {% csrf_token %}
+        <div class="mb-3">
+          <label for="formGroupExampleInput2" class="form-label">Title (Required)</label>
+          <input type="text" class="form-control" id="formGroupExampleInput2" name="title" placeholder="Enter title for the listing here">
+        </div>
+
+        <label for="floatingTextarea2">Description (Required)</label>
+        <div class="form-floating" style="padding-top: 10px;">
+          <textarea class="form-control" placeholder="Enter item description here" name="description" id="floatingTextarea2" style="height: 100px"></textarea>
+          <label for="floatingTextarea2" style="color: #636363">Enter item description here</label>
+        </div>
+
+        <div class="mb-3" style="padding-top: 18px;">
+        <label for="basic-url" class="form-label">Image URL to the item (Optional)</label>
+        <div class="input-group">
+            <span class="input-group-text" id="basic-addon3">https://image.com</span>
+            <input type="text" class="form-control" id="basic-url" name="image_url" aria-describedby="basic-addon3 basic-addon4">
+        </div>
+        </div>
+
+        <label for="formGroupExampleInput2" class="form-label">Category (Required)</label>
+        <select class="form-select" aria-label="Default select example" name="category_id">
+            <option selected style="background-color: #303035; color:#dee2e6;" disabled>Choose Category Here</option>
+            <option value="2" style="background-color: #303035; color:#dee2e6;">Fashion</option>
+            <option value="3" style="background-color: #303035; color:#dee2e6;">Stationeries</option>
+            <option value="4" style="background-color: #303035; color:#dee2e6;">Toys</option>
+            <option value="5" style="background-color: #303035; color:#dee2e6;">Electronics</option>
+            <option value="6" style="background-color: #303035; color:#dee2e6;">Books</option>
+        </select>
+
+        <div class="mb-3" style="padding-top: 18px;">
+          <label for="formGroupExampleInput2" class="form-label">Bidding starts at (Required)</label>
+          <input type="text" class="form-control" id="formGroupExampleInput2" name="starting_bid" placeholder="Enter starting bid">
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="background-color: #303035; color:#dee2e6; border: 0;">Save Listing</button>
+        </form>
+{% endblock %}
